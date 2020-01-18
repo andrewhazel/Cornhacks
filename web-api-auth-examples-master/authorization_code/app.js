@@ -139,6 +139,7 @@ app.get('/refresh_token', function(req, res) {
       res.send({
         'access_token': access_token
       });
+      console.log('final');
     }
   });
 });
