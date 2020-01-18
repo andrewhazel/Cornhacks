@@ -18,9 +18,36 @@
 
   <body>
     <div class="container">
-      <div id="login">
-        <h1>This is an example of the Authorization Code flow</h1>
-        <a href="/login" class="btn btn-primary">Log in with Spotify</a>
+      <style type="text/css">
+        .container{
+          height: 100vh;
+          width: auto;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background: linear-gradient(rgba(0, 0, 0, 0.4), black), url(https://www.komando.com/wp-content/uploads/2019/08/weather-apps-thunder-storm.jpg) no-repeat;
+          padding: 0px 34px;
+          color: #fff;
+          background-position: center;
+          background-size: cover;
+        }
+        </style>
+      <div ng-view autoscroll="true" class="ng-scope" style>
+        <div class= "landingng-scope">
+          
+          <div class= "landing-jumbotron">
+            <div id="login">
+              <h1>Welcome To Your Personalized Weather Playlist <span>!
+                <style type="text/css">
+                .landing-jumbotron span{
+                  color: #1DB954;
+                }
+                </style>
+              </span></h1>
+              <a href="/login" class="btn btn-primary">Log in with Spotify</a>
+            </div>
+          </div>
+        </div>
       </div>
       <div id="loggedin">
         <div id="user-profile">
