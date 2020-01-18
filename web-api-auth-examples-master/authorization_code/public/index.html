@@ -83,6 +83,7 @@
         <div id="oauth">
         </div>
         <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
+        <button id="top-artists">Print top artists</button>
       </div>
     </div>
 
@@ -188,7 +189,19 @@
                 refresh_token: refresh_token
               });
             });
-          }, false);
+          }, 
+          document.getElementById('top-artists').addEventListener('click', function() {
+            $.ajax({
+                url: 'https://api.spotify.com/v1/me/top/tracks',
+                headers: {
+                  'Authorization': 'Bearer ' + access_token
+                },
+                success: function(response) {
+                  console.log(response)
+                }
+            })
+          })
+          ,false);
         }
       })();
     </script>
