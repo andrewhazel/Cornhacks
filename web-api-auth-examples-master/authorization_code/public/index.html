@@ -205,14 +205,16 @@
                   }
                 }
             })
-            const data = {
-              name: 'Test Playlist',
-              public: false
-            }
+            const playlistData = JSON.stringify({
+              "name": "New Playlist",
+              "description": "New playlist description",
+              "public": false
+            })
             $.ajax({
               type: "POST",
               url: `https://api.spotify.com/v1/users/${user_id}/playlists`,
-              name: 'Test Playlist',
+              data: playlistData,
+              contentType: 'application/json',
               headers: {
                   'Authorization': 'Bearer ' + access_token
                 },
