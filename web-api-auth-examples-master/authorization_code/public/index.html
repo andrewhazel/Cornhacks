@@ -94,15 +94,8 @@
           <img class="media-object" width="150" src="{{images.0.url}}" />
         </div>
         <div class="media-body">
-          <dl class="dl-horizontal">
-            <dt>Display name</dt><dd class="clearfix">{{display_name}}</dd>
-            <dt>Id</dt><dd>{{id}}</dd>
-            <dt>Email</dt><dd>{{email}}</dd>
-            <dt>Spotify URI</dt><dd><a href="{{external_urls.spotify}}">{{external_urls.spotify}}</a></dd>
-            <dt>Link</dt><dd><a href="{{href}}">{{href}}</a></dd>
-            <dt>Profile Image</dt><dd class="clearfix"><a href="{{images.0.url}}">{{images.0.url}}</a></dd>
-            <dt>Country</dt><dd>{{country}}</dd>
-          </dl>
+          <ul id="song-list">
+          </ul>
         </div>
       </div>
     </script>
@@ -147,6 +140,8 @@
         var access_token = params.access_token,
             refresh_token = params.refresh_token,
             error = params.error;
+            
+        let user_id;
 
         if (error) {
           alert('There was an error during the authentication');
@@ -158,6 +153,7 @@
               refresh_token: refresh_token
             });
 
+
             $.ajax({
                 url: 'https://api.spotify.com/v1/me',
                 headers: {
@@ -165,6 +161,8 @@
                 },
                 success: function(response) {
                   userProfilePlaceholder.innerHTML = userProfileTemplate(response);
+                  user_id = response.id 
+                  console.log(user_id)
 
                   $('#login').hide();
                   $('#loggedin').show();
@@ -197,6 +195,29 @@
                   'Authorization': 'Bearer ' + access_token
                 },
                 success: function(response) {
+                  let list = document.getElementById('song-list');
+                  console.log(list)
+                  console.log(response)
+                  for(let i = 0; i < 20; i++) {
+                    let element = document.createElement("li")
+                    element.insertAdjacentHTML("beforeend", response.items[i].name)
+                    list.insertAdjacentElement("beforeend", element)
+                  }
+                }
+            })
+            const data = {
+              name: 'Test Playlist',
+              public: false
+            }
+            $.ajax({
+              type: "POST",
+              url: `https://api.spotify.com/v1/users/${user_id}/playlists`,
+              name: 'Test Playlist',
+              headers: {
+                  'Authorization': 'Bearer ' + access_token
+                },
+                success: function(response) {
+                  console.log('playlist created')
                   console.log(response)
                 }
             })
