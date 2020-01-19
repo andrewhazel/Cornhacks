@@ -150,6 +150,10 @@ app.get('/refresh_token', function(req, res) {
 console.log('Listening on 8888');
 app.listen(8888);
 
+/*
+This section of code uses DarkSky API to develop a forecast, or an object containing relevant weather data.
+*/
+
 class forecast{
   constructor(temp, wind, precip, weatherPic, weatherSummary, weatherNow){
       this.temp = temp;
@@ -257,7 +261,26 @@ function weatherCase(jsonDump){
   return new forecast(temperature, windSpeed, precipChance, weatherPicture, summary, currentWeather);
 
 }
-link();
+
+function songSort(songList, trackFeature, lowerThreshold, upperThreshold){
+  const PLAYLIST_MAX_SIZE = 10;
+
+  const curatedPlaylist = [];
+  let maxSizeReached = false;
+  for (i = 0; i < songList.length; ++i){
+    if (curatedPlaylist.length !== PLAYLIST_MAX_SIZE){
+      if (songList[i].trackFeature >= lowerThreshold && songList[i].trackFeature <= upperThreshold){
+        curatedPlaylist.push(songList[i]);
+        maxSizeReached = true;
+      }
+    }else{
+      break;
+    }
+  } if (!maxSizeReached){
+    //#stub
+  }
+  
+}
 
 
 
