@@ -75,10 +75,21 @@ if (error) {
             
             console.log(response)
             for(let i = 0; i < 20; i++) {
-              let uri = response.items[i].id
-              song_list.push(uri)
               let element = document.createElement("li")
-              element.textContent = response.items[i].name
+              var myImage = new Image(100, 100);
+              myImage.src = response.items[i].album.images[0].url;
+              myImage.style.padding = "5px 5px 5px 5px"
+              element.appendChild(myImage);
+
+              //img.appendTo(element); 
+              var a = document.createElement('a');
+              var link = document.createTextNode(response.items[i].name);
+              a.appendChild(link);
+              a.href = response.items[i].external_urls.spotify;
+              a.target="_blank";
+              a.style.color= "white";
+              
+              element.appendChild(a);
               list.insertAdjacentElement("beforeend", element)
             }
 
