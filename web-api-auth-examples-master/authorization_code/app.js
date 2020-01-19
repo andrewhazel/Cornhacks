@@ -154,8 +154,8 @@ app.listen(8888);
 This section of code uses DarkSky API to develop a forecast, or an object containing relevant weather data.
 */
 
-class forecast{
-  constructor(temp, wind, precip, weatherPic, weatherSummary, weatherNow){
+class Response{
+  constructor(temp, wind, precip, weatherPic, weatherSummary, weatherNow, weatherPlaylist){
       this.temp = temp;
       this.wind = wind;
       this.precip = precip;
@@ -212,53 +212,68 @@ function weatherCase(jsonDump){
   const precipChance = Math.round(jsonDump.currently.precipProbability * 100);
   const summary = jsonDump.daily.summary;
   currentWeather = jsonDump.currently.icon;
+  let weatherSongList;
 
   //Determine type of weather for display. 
   switch (currentWeather) {
     case "rain" :
       weatherPicture = weatherPictures.rain;
+      weatherSongList = songSort(list, 'acoutisticness', 0.5, 1.0);
       break;
     case "clear-day" :
       weatherPicture = weatherPictures.sunny;
+      weatherSongList = songSort(list, 'valence', 0.6, 1.0);
       break;
     case "cloudy" :
       weatherPicture = weatherPictures.cloudy;
+      weatherSongList = songSort(list, 'energy', 0.3, 0.6);
       break;
     case "clear-night":
       weatherPicture = weatherPictures.clearNight;
+      weatherSongList = songSort(list, 'danceability', 0.6, 1.0);
       break;
     case "snow":
       weatherPicture = weatherPictures.snow;
+      weatherSongList = songSort(list, 'acousticness', 0.3, 0.7);
       break;
     case "sleet":
       weatherPicture = weatherPictures.sleet;
+      weatherSongList = songSort(list, 'acousticness', 0.3, 0.7);
       break;
     case "wind":
       weatherPicture = weatherPictures.wind;
+      weatherSongList = songSort(list, 'energy', 0.4, 0.7);
       break;
     case "fog":
       weatherPicture = weatherPictures.fog;
+      weatherSongList = songSort(list, 'energy', 0.0, 0.3);
       break;
     case "partly-cloudy-night":
       weatherPicture = weatherPictures.partlyCloudyNight;
+      weatherSongList = songSort(list, 'danceability', 0.5, 0.8);
       break;
     case "partly-cloudy-day":
       weatherPicture = weatherPictures.partlyCloudyDay;
+      weatherSongList = songSort(list, 'valence', 0.4, 0.9);
       break;
     case "hail":
       weatherPicture = weatherPictures.hail;
+      weatherSongList = songSort(list, 'acousticness', 0.0, 0.5);
       break;
     case "thunderstorm":
       weatherPicture = weatherPictures.thunderstorm;
+      weatherSongList = songSort(list, 'acousticness', 0.0, 0.5);
       break;
     case "tornado":
       weatherPicture = weatherPictures.tornado;
+      weatherSongList = songSort(list, 'acousticness', 0.0, 0.5);
       break;
     default:
       weatherPicture = weatherPictures.sunny;
+      weatherSongList = songSort(list, 'energy', 0.5, 1.0);
 
   }
-  return new forecast(temperature, windSpeed, precipChance, weatherPicture, summary, currentWeather);
+  return new Response(temperature, windSpeed, precipChance, weatherPicture, summary, currentWeather, weatherSongList);
 
 }
 
@@ -279,6 +294,8 @@ function songSort(songList, trackFeature, lowerThreshold, upperThreshold){
   } if (!maxSizeReached){
     //#stub
   }
+
+  return curatedPlaylist;
   
 }
 
