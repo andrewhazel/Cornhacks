@@ -13,23 +13,35 @@ Has the sudden arrival of radiant sunshine ever given you a boost in energy? Wha
 ### Architecture ###
 
 -**Javascript/node.js**
--**HTML/CSS**
--**REST-based DarkSky and Spotify APIs**
--**Authentication layers provided via Spotify for Developers**
+
+-**HTML/CSS** 
+
+-**REST-based DarkSky and Spotify APIs** 
+
+-**Authentication layers provided via Spotify for Developers** 
 
 ### Dependencies ###
 
 -**node.js**
--**node_modules**
+
+-**node_modules** 
+
 -**node_fetch**
--**SpotifyAPI**
--**DarkSky API**
+
+-**SpotifyAPI** 
+
+-**DarkSky API** 
 
 ### Instructions ###
 1). Ensure that your machine has  `node.js` frameworks installed.
+
 2). In order for this application to process REST-based requests, ensure that a `node_modules` directory exists within the `authorization_code` directory in the project repository.
+
 3). After changing into the `authorization_code` directory, run the command 
 `node app.js`
-4). Open up a browser and type `localhost:8888` into the address bar - this should direct you to the pre-authentication page.
-5). Upon successful authentication, you will be directed to a page where you can generate a playlist.
+
+4). Open up a browser and type `localhost:8888` into the address bar - this should direct you to the pre-authentication page. 
+
+5). Upon successful authentication, you will be directed to a page where you can generate a playlist. 
+
 6). This playlist will now appear in your Spotify account and clicking on any song will redirect you to the Spotify web browser.
