@@ -80,16 +80,40 @@
         </div>
       </div>
       <div id="loggedin">
-        <div id="user-profile">
+        <h1 id="header"></h1>
+        <button id="top-artists">Print top artists</button>
+        <div class="media">
+          <div class="pull-left">
+            <img id="profile-picture" class="media-object" width="150" />
+          </div>
+          <div class="media-body">
+            <style type="text/css">
+              .media-body{
+                float: left;
+                width:50%;
+                padding: 20px 30px 20px 0px;
+              }
+              </style>
+            <ul id="song-list">
+            </ul>
+          </div>
+          <div class="weather">
+            <style type="text/css">
+              .weather{
+                float:right;
+                width:50%;
+                padding: 20px 0px 20px 30px;
+              }
+              </style>
+              CURRENT WEATHER
+          </div>
         </div>
-        <div id="oauth">
         </div>
         
-        <button id="top-artists">Print top artists</button>
       </div>
     </div>
 
-    <script id="user-profile-template" type="text/x-handlebars-template">
+    <!-- <script id="user-profile-template" type="text/x-handlebars-template">
       <h1>{{display_name}}'s Weather Playlist</h1>
       <div class="media">
 
@@ -100,7 +124,7 @@
           <style type="text/css">
             .media-body{
               float: left;
-              width:50%
+              width:50%;
               padding: 20px 30px 20px 0px;
             }
             </style>
@@ -111,14 +135,14 @@
           <style type="text/css">
             .weather{
               float:right;
-              width:50%
+              width:50%;
               padding: 20px 0px 20px 30px;
             }
             </style>
             CURRENT WEATHER
         </div>
       </div>
-    </script>
+    </script> -->
 
     <script id="oauth-template" type="text/x-handlebars-template">
       <h2></h2>
@@ -129,9 +153,10 @@
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="app.js"></script>
     <script>
       (function() {
-
+        $('#loggedin').show();
         /**
          * Obtains parameters from the hash of the URL
          * @return Object
@@ -146,13 +171,13 @@
           return hashParams;
         }
 
-        var userProfileSource = document.getElementById('user-profile-template').innerHTML,
-            userProfileTemplate = Handlebars.compile(userProfileSource),
-            userProfilePlaceholder = document.getElementById('user-profile');
+        // var userProfileSource = document.getElementById('user-profile-template').innerHTML,
+        //     userProfileTemplate = Handlebars.compile(userProfileSource),
+        //     userProfilePlaceholder = document.getElementById('user-profile');
 
-        var oauthSource = document.getElementById('oauth-template').innerHTML,
-            oauthTemplate = Handlebars.compile(oauthSource),
-            oauthPlaceholder = document.getElementById('oauth');
+        // var oauthSource = document.getElementById('oauth-template').innerHTML,
+        //     oauthTemplate = Handlebars.compile(oauthSource),
+        //     oauthPlaceholder = document.getElementById('oauth');
 
         var params = getHashParams();
 
@@ -161,17 +186,11 @@
             error = params.error;
             
         let user_id;
-
+        $('#loggedin').show();
         if (error) {
           alert('There was an error during the authentication');
         } else {
           if (access_token) {
-            // render oauth info
-            oauthPlaceholder.innerHTML = oauthTemplate({
-              access_token: access_token,
-              refresh_token: refresh_token
-            });
-
 
             $.ajax({
                 url: 'https://api.spotify.com/v1/me',
@@ -179,7 +198,9 @@
                   'Authorization': 'Bearer ' + access_token
                 },
                 success: function(response) {
-                  userProfilePlaceholder.innerHTML = userProfileTemplate(response);
+                  document.getElementById('header').insertAdjacentText('beforeend', `${response.display_name}'s Weather Playlist`)
+                  document.getElementById('profile-picture').src = response.images[0].url
+                  console.log(response)
                   user_id = response.id 
                   console.log(user_id)
 
@@ -211,7 +232,6 @@
                     myImage.src = response.items[i].album.images[0].url;
                     myImage.style.padding = "5px 5px 5px 5px"
                     element.appendChild(myImage);
-                    console.log(myImage);
                     //img.appendTo(element); 
                     element.insertAdjacentHTML("beforeend", response.items[i].name)
                     list.insertAdjacentElement("beforeend", element)
@@ -223,19 +243,17 @@
               "description": "New playlist description",
               "public": false
             })
-            $.ajax({
-              type: "POST",
-              url: `https://api.spotify.com/v1/users/${user_id}/playlists`,
-              data: playlistData,
-              contentType: 'application/json',
-              headers: {
-                  'Authorization': 'Bearer ' + access_token
-                },
-                success: function(response) {
-                  console.log('playlist created')
-                  console.log(response)
-                }
-            })
+            // $.ajax({
+            //   type: "POST",
+            //   url: `https://api.spotify.com/v1/users/${user_id}/playlists`,
+            //   data: playlistData,
+            //   contentType: 'application/json',
+            //   headers: {
+            //       'Authorization': 'Bearer ' + access_token
+            //     },
+            //     success: function(response) {
+            //     }
+            // })
           })
           ;
         }
