@@ -119,6 +119,8 @@ app.get('/callback', function(req, res) {
       }
     });
   };
+
+  init()
 });
 
 app.get('/refresh_token', function(req, res) {
@@ -299,5 +301,116 @@ function songSort(songList, trackFeature, lowerThreshold, upperThreshold){
   
 }
 
+function init() {
+        /**
+         * Obtains parameters from the hash of the URL
+         * @return Object
+         */
+        function getHashParams() {
+          var hashParams = {};
+          var e, r = /([^&;=]+)=?([^&;]*)/g,
+              q = document.location.hash.substring(1);
+          while ( e = r.exec(q)) {
+             hashParams[e[1]] = decodeURIComponent(e[2]);
+          }
+          return hashParams;
+        }
 
+        // var userProfileSource = document.getElementById('user-profile-template').innerHTML,
+        //     userProfileTemplate = Handlebars.compile(userProfileSource),
+        //     userProfilePlaceholder = document.getElementById('user-profile');
+
+        // var oauthSource = document.getElementById('oauth-template').innerHTML,
+        //     oauthTemplate = Handlebars.compile(oauthSource),
+        //     oauthPlaceholder = document.getElementById('oauth');
+
+        var params = getHashParams();
+
+        var access_token = params.access_token,
+            refresh_token = params.refresh_token,
+            error = params.error;
+            
+        let user_id;
+        $('#loggedin').show();
+        if (error) {
+          alert('There was an error during the authentication');
+        } else {
+          if (access_token) {
+
+            $.ajax({
+                url: 'https://api.spotify.com/v1/me',
+                headers: {
+                  'Authorization': 'Bearer ' + access_token
+                },
+                success: function(response) {
+                  document.getElementById('header').insertAdjacentText('beforeend', `${response.display_name}'s Weather Playlist`)
+                  document.getElementById('profile-picture').src = response.images[0].url
+                  console.log(response)
+                  user_id = response.id 
+                  console.log(user_id)
+
+                  $('#login').hide();
+                  $('#loggedin').show();
+                }
+            });
+          } else {
+              // render initial screen
+              $('#login').show();
+              $('#loggedin').hide();
+          }
+
+         
+          document.getElementById('top-artists').addEventListener('click', function() {
+            $.ajax({
+                url: 'https://api.spotify.com/v1/me/top/tracks',
+                limit: 50,
+                headers: {
+                  'Authorization': 'Bearer ' + access_token
+                },
+                success: function(response) {
+                  let list = document.getElementById('song-list');
+                  
+                  console.log(response)
+                  for(let i = 0; i < 20; i++) {
+                    let element = document.createElement("li")
+                    var myImage = new Image(100, 100);
+                    myImage.src = response.items[i].album.images[0].url;
+                    myImage.style.padding = "5px 5px 5px 5px"
+                    element.appendChild(myImage);
+
+                    //img.appendTo(element); 
+                    var a = document.createElement('a');
+                    var link = document.createTextNode(response.items[i].name);
+                    a.appendChild(link);
+                    a.href = response.items[i].external_urls.spotify;
+                    a.target="_blank";
+                    a.style.color= "white";
+                    console.log(a.href);
+                    element.appendChild(a);
+                    list.insertAdjacentElement("beforeend", element)
+                  }
+                }
+            })
+            const playlistData = JSON.stringify({
+              "name": "New Playlist",
+              "description": "New playlist description",
+              "public": false
+            })
+            // $.ajax({
+            //   type: "POST",
+            //   url: `https://api.spotify.com/v1/users/${user_id}/playlists`,
+            //   data: playlistData,
+            //   contentType: 'application/json',
+            //   headers: {
+            //       'Authorization': 'Bearer ' + access_token
+            //     },
+            //     success: function(response) {
+            //     }
+            // })
+          })
+          ;
+        }
+      }
+
+init()
 
