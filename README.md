@@ -1,7 +1,7 @@
-#TuneCast 
+# TuneCast #
 ****The utimate playlist for when the weather has you "*...feeling some type of way*".****
 
-### Description
+### Description ###
 Despite the freedom that streaming platforms like Spotify provide with their ***create a playlist*** option, it can often be difficult to find music that you enjoy listening to on a daily basis. Additionally, it is apparent that weather phenoma often has a great impact on the daily behaviors and moods in our lives; a sudden thunderstorm can sour the mood of a businessman leaving lunch in a full suit. These seemingly unrelated subjects find tangential ground with **TuneCast**, a browser application that connects to Spotify in order to curate a playlist of songs that you most commonly frequent with the attributes of the weather.
 
 ***What exactly does this mean?***
@@ -10,14 +10,14 @@ Has the sudden arrival of radiant sunshine ever given you a boost in energy? Wha
 
 **TuneCast is a personalized listening experience unlike any other.**
 
-###Architecture
+### Architecture ###
 
 -**Javascript/node.js**
 -**HTML/CSS**
 -**REST-based DarkSky and Spotify APIs**
 -**Authentication layers provided via Spotify for Developers**
 
-###Dependencies
+### Dependencies ###
 
 -**node.js**
 -**node_modules**
@@ -25,7 +25,7 @@ Has the sudden arrival of radiant sunshine ever given you a boost in energy? Wha
 -**SpotifyAPI**
 -**DarkSky API**
 
-###Instructions
+### Instructions ###
 1). Ensure that your machine has  `node.js` frameworks installed.
 2). In order for this application to process REST-based requests, ensure that a `node_modules` directory exists within the `authorization_code` directory in the project repository.
 3). After changing into the `authorization_code` directory, run the command 
