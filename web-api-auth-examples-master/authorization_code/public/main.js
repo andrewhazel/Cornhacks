@@ -12,139 +12,6 @@ function getHashParams() {
   return hashParams;
 }
 
-var userProfileSource = document.getElementById('user-profile-template').innerHTML,
-    userProfileTemplate = Handlebars.compile(userProfileSource),
-    userProfilePlaceholder = document.getElementById('user-profile');
-
-var oauthSource = document.getElementById('oauth-template').innerHTML,
-    oauthTemplate = Handlebars.compile(oauthSource),
-    oauthPlaceholder = document.getElementById('oauth');
-
-var params = getHashParams();
-
-var access_token = params.access_token,
-    refresh_token = params.refresh_token,
-    error = params.error;
-
-let user_id;
-
-let playlist_id;
-
-const song_list = new Array()
-
-const playlist_list = [];
-
-if (error) {
-  alert('There was an error during the authentication');
-} else {
-  if (access_token) {
-    // render oauth info
-    oauthPlaceholder.innerHTML = oauthTemplate({
-      access_token: access_token,
-      refresh_token: refresh_token
-    });
-
-    $.ajax({
-        url: 'https://api.spotify.com/v1/me',
-        headers: {
-          'Authorization': 'Bearer ' + access_token
-        },
-        success: function(response) {
-          user_id = response.id
-          userProfilePlaceholder.innerHTML = userProfileTemplate(response);
-
-          $('#login').hide();
-          $('#loggedin').show();
-        }
-    });
-  } else {
-      // render initial screen
-      $('#login').show();
-      $('#loggedin').hide();
-  }
-
-  document.getElementById('top-artists').addEventListener('click', function() {
-      $.ajax({
-          url: 'https://api.spotify.com/v1/me/top/tracks',
-          limit: '50',
-          headers: {
-            'Authorization': 'Bearer ' + access_token
-          },
-          success: function(response) {
-            let list = document.getElementById('song-list');
-            
-            console.log(response)
-            for(let i = 0; i < 20; i++) {
-              let element = document.createElement("li")
-              var myImage = new Image(100, 100);
-              myImage.src = response.items[i].album.images[0].url;
-              myImage.style.padding = "5px 5px 5px 5px"
-              element.appendChild(myImage);
-
-              //img.appendTo(element); 
-              var a = document.createElement('a');
-              var link = document.createTextNode(response.items[i].name);
-              a.appendChild(link);
-              a.href = response.items[i].external_urls.spotify;
-              a.target="_blank";
-              a.style.color= "white";
-              
-              element.appendChild(a);
-              list.insertAdjacentElement("beforeend", element)
-            }
-
-            $.ajax({
-              url: "https://api.spotify.com/v1/audio-features",
-              data: {"ids" : song_list.join()},
-              headers: {
-                'Authorization': 'Bearer ' + access_token
-              },
-            success: function(response) {
-              console.log(response)
-              console.log(weatherCase(link(), response))
-            }})
-          }
-      })
-      const playlistData = JSON.stringify({
-        "name": "Your TuneCast Playlist",
-        "description": "Music for your weather.",
-        "public": false
-      })
-
-      //Determine Song List
-
-      // console.log(song_list.join(' ,'))
-
-
-
-      // $.ajax({
-      //   type: "POST",
-      //   url: `https://api.spotify.com/v1/users/${user_id}/playlists`,
-      //   data: playlistData,
-      //   contentType: 'application/json',
-      //   headers: {
-      //       'Authorization': 'Bearer ' + access_token
-      //     },
-      //     success: function(response) {
-      //       console.log(response.id)
-      //       playlist_id = response.id
-      //       $.ajax({
-      //         type: "POST",
-      //         url: `https://api.spotify.com/v1/playlists/${playlist_id}/tracks`,
-      //         data: playlistData,
-      //         contentType: 'application/json',
-      //         headers: {
-      //             'Authorization': 'Bearer ' + access_token
-      //           },
-      //           success: function(response) {
-                  
-      //           }
-      //       })
-      //     }
-      // })
-    })
-}
-        
 class Response{
   constructor(temp, wind, precip, weatherPic, weatherSummary, weatherNow, weatherPlaylist){
       this.temp = temp;
@@ -153,6 +20,7 @@ class Response{
       this.weatherPic = weatherPic;
       this.weatherSummary = weatherSummary;
       this.weatherNow = weatherNow;
+      this.weatherPlaylist = weatherPlaylist;
   }
 
   get currentWeatherForecast(){
@@ -161,22 +29,20 @@ class Response{
 
 }
 
+function calculateWeather(list){
+  $.ajax({
+    url: 'https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/9a4d1c2917194941aa3da679d3e40262/40.8136, -96.7026',
+    async: false,
+    success: function(response) {
+      console.log(response)
+      let weather = weatherCase(list, response)
+      console.log(weather)
+      return weather
+  }
+})}
 
-function link() {
-  const fetch = require("node-fetch");
-  fetch('https://api.darksky.net/forecast/9a4d1c2917194941aa3da679d3e40262/40.8136, -96.7026')
-  .then((resp) => resp.json())
-  .then(function(data) {
-    forecast = weatherCase(data);
-    console.log(forecast);
-    return forecast;
-  })
-  .catch(()=>{
-      console.log('Unable to recieve weather data.');
-  })
-}
 
-function weatherCase(jsonDump, songs){
+function weatherCase(list, jsonDump){
   let weatherPicture;
   const currentDay = new Date().getDay()
   const weatherPictures = {
@@ -268,14 +134,14 @@ function weatherCase(jsonDump, songs){
 
 }
 
+
 function songSort(songList, trackFeature, lowerThreshold, upperThreshold){
   const PLAYLIST_MAX_SIZE = 10;
-
   const curatedPlaylist = [];
   let maxSizeReached = false;
   for (i = 0; i < songList.length; ++i){
     if (curatedPlaylist.length !== PLAYLIST_MAX_SIZE){
-      if (songList[i].trackFeature >= lowerThreshold && songList[i].trackFeature <= upperThreshold){
+      if (songList[i][trackFeature] >= lowerThreshold && songList[i][trackFeature] <= upperThreshold){
         curatedPlaylist.push(songList[i]);
         maxSizeReached = true;
       }
@@ -285,7 +151,141 @@ function songSort(songList, trackFeature, lowerThreshold, upperThreshold){
   } if (!maxSizeReached){
     //#stub
   }
-
+  console.log('playlist')
   return curatedPlaylist;
   
+}
+
+
+var userProfileSource = document.getElementById('user-profile-template').innerHTML,
+    userProfileTemplate = Handlebars.compile(userProfileSource),
+    userProfilePlaceholder = document.getElementById('user-profile');
+
+var oauthSource = document.getElementById('oauth-template').innerHTML,
+    oauthTemplate = Handlebars.compile(oauthSource),
+    oauthPlaceholder = document.getElementById('oauth');
+
+var params = getHashParams();
+
+var access_token = params.access_token,
+    refresh_token = params.refresh_token,
+    error = params.error;
+
+let user_id;
+
+let playlist_id;
+
+const song_list = new Array()
+
+const playlist_list = [];
+
+if (error) {
+  alert('There was an error during the authentication');
+} else {
+  if (access_token) {
+    // render oauth info
+    oauthPlaceholder.innerHTML = oauthTemplate({
+      access_token: access_token,
+      refresh_token: refresh_token
+    });
+
+    $.ajax({
+        url: 'https://api.spotify.com/v1/me',
+        headers: {
+          'Authorization': 'Bearer ' + access_token
+        },
+        success: function(response) {
+          user_id = response.id
+          userProfilePlaceholder.innerHTML = userProfileTemplate(response);
+
+          $('#login').hide();
+          $('#loggedin').show();
+        }
+    });
+  } else {
+      // render initial screen
+      $('#login').show();
+      $('#loggedin').hide();
+  }
+
+  document.getElementById('top-artists').addEventListener('click', function() {
+      $.ajax({
+          url: 'https://api.spotify.com/v1/me/top/tracks',
+          data: {"limit": 50},
+          headers: {
+            'Authorization': 'Bearer ' + access_token
+          },
+          success: function(response) {
+            let list = document.getElementById('song-list');
+            
+            for(let i = 0; i < 20; i++) {
+              song_list.push(response.items[i].id)
+              let element = document.createElement("li")
+              var myImage = new Image(100, 100);
+              myImage.src = response.items[i].album.images[0].url;
+              myImage.style.padding = "5px 5px 5px 5px"
+              element.appendChild(myImage);
+
+              //img.appendTo(element); 
+              var a = document.createElement('a');
+              var link = document.createTextNode(response.items[i].name);
+              a.appendChild(link);
+              a.href = response.items[i].external_urls.spotify;
+              a.target="_blank";
+              a.style.color= "white";
+              
+              element.appendChild(a);
+              list.insertAdjacentElement("beforeend", element)
+            }
+            $.ajax({
+              url: "https://api.spotify.com/v1/audio-features",
+              data: {"ids" : song_list.join()},
+              async: false,
+              headers: {
+                'Authorization': 'Bearer ' + access_token
+              },
+            success: function(response) {
+              console.log(response.audio_features)
+              console.log(calculateWeather(response.audio_features))
+            }})
+          }
+      })
+      const playlistData = JSON.stringify({
+        "name": "Your TuneCast Playlist",
+        "description": "Music for your weather.",
+        "public": false
+      })
+
+      //Determine Song List
+
+      // console.log(song_list.join(' ,'))
+
+
+
+      // $.ajax({
+      //   type: "POST",
+      //   url: `https://api.spotify.com/v1/users/${user_id}/playlists`,
+      //   data: playlistData,
+      //   contentType: 'application/json',
+      //   headers: {
+      //       'Authorization': 'Bearer ' + access_token
+      //     },
+      //     success: function(response) {
+      //       console.log(response.id)
+      //       playlist_id = response.id
+      //       $.ajax({
+      //         type: "POST",
+      //         url: `https://api.spotify.com/v1/playlists/${playlist_id}/tracks`,
+      //         data: playlistData,
+      //         contentType: 'application/json',
+      //         headers: {
+      //             'Authorization': 'Bearer ' + access_token
+      //           },
+      //           success: function(response) {
+                  
+      //           }
+      //       })
+      //     }
+      // })
+    })
 }
