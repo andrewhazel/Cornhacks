@@ -12,6 +12,11 @@ function getHashParams() {
   return hashParams;
 }
 
+/*
+Creates an object with pertinent data for displaying weather and providing
+the user with a curated playlist.
+*/
+
 class Response{
   constructor(temp, wind, precip, weatherPic, weatherSummary, weatherNow, weatherPlaylist){
       this.temp = temp;
@@ -29,9 +34,18 @@ class Response{
 
 }
 
+/*
+Uses DarkSky API to gather weather information about a coordinate pair, then
+classifies the data and makes an assumption about how to sort a 
+user's most frequented songs.
+*/
+
 function calculateWeather(list){
+  //Provides coordinates for test loction of Seattle, WA and locally in Lincoln, NE
+  const TEST_LOCATION = '47.6062, -122.3321';
+  const LOCAL_LOCATION = '40.8136, -96.7026';
   $.ajax({
-    url: 'https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/9a4d1c2917194941aa3da679d3e40262/40.8136, -96.7026',
+    url: `https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/9a4d1c2917194941aa3da679d3e40262/${TEST_LOCATION}`,
     async: false,
     success: function(response) {
       let weather = weatherCase(list, response)
@@ -151,61 +165,75 @@ function weatherCase(list, jsonDump){
     case "rain" :
       weatherPicture = weatherPictures.rain;
       weatherSongList = songSort(list, 'acoutisticness', 0.5, 1.0);
+      currentWeather = "Rain";
       break;
     case "clear-day" :
       weatherPicture = weatherPictures.sunny;
       weatherSongList = songSort(list, 'valence', 0.6, 1.0);
+      currentWeather = "Clear Day";
       break;
     case "cloudy" :
       weatherPicture = weatherPictures.cloudy;
       weatherSongList = songSort(list, 'energy', 0.3, 0.6);
+      currentWeather = "Cloudy";
       break;
     case "clear-night":
       weatherPicture = weatherPictures.clearNight;
       weatherSongList = songSort(list, 'danceability', 0.6, 1.0);
-      description.textContent = "A clear Night Calls for a Highly Dancable Playlist - Jessie."
+      currentWeather = "Clear Night";
       break;
     case "snow":
       weatherPicture = weatherPictures.snow;
       weatherSongList = songSort(list, 'acousticness', 0.3, 0.7);
+      currentWeather = "Snow";
       break;
     case "sleet":
       weatherPicture = weatherPictures.sleet;
       weatherSongList = songSort(list, 'acousticness', 0.3, 0.7);
+      currentWeather = "Sleet";
       break;
     case "wind":
       weatherPicture = weatherPictures.wind;
       weatherSongList = songSort(list, 'energy', 0.4, 0.7);
+      currentWeather = "Wind";
       break;
     case "fog":
       weatherPicture = weatherPictures.fog;
       weatherSongList = songSort(list, 'energy', 0.0, 0.3);
+      currentWeather = "Fog";
       break;
     case "partly-cloudy-night":
       weatherPicture = weatherPictures.partlyCloudyNight;
       weatherSongList = songSort(list, 'danceability', 0.5, 0.8);
+      currentWeather = "Partly Cloudy Night";
       break;
     case "partly-cloudy-day":
       weatherPicture = weatherPictures.partlyCloudyDay;
       weatherSongList = songSort(list, 'valence', 0.4, 0.9);
+      currentWeather = "Partly Cloudy Day";
       break;
     case "hail":
       weatherPicture = weatherPictures.hail;
       weatherSongList = songSort(list, 'acousticness', 0.0, 0.5);
+      currentWeather = "Hail";
       break;
     case "thunderstorm":
       weatherPicture = weatherPictures.thunderstorm;
       weatherSongList = songSort(list, 'acousticness', 0.0, 0.5);
+      currentWeather = "Thunderstorm";
       break;
     case "tornado":
       weatherPicture = weatherPictures.tornado;
       weatherSongList = songSort(list, 'acousticness', 0.0, 0.5);
+      currentWeather = "Tornado";
       break;
     default:
       weatherPicture = weatherPictures.sunny;
       weatherSongList = songSort(list, 'energy', 0.5, 1.0);
+      currentWeather = "Sunny";
 
   }
+  description.textContent = `Here is your custom playlist for a weather type of: ${currentWeather}`;
   return new Response(temperature, windSpeed, precipChance, weatherPicture, summary, currentWeather, weatherSongList);
 
 }
