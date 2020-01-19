@@ -83,7 +83,8 @@
             <div id="oauth">
             </div>
     
-            <button id="top-artists">Print Top Artists</button>
+            <button style="background-color:white;color:black;" id="top-artists">Print Top Artists</button>
+          
             <div class="media">
               <div class="pull-left">
                 <style type="text/css">
@@ -99,6 +100,7 @@
                 <style type="text/css">
                   .media-body{
                     float: left;
+                    color: white;
                     padding: 20px 30px 20px 0px;
                   }
                   </style>
@@ -125,7 +127,7 @@
     </div>
 
     <script id="user-profile-template" type="text/x-handlebars-template">
-      <h1>Logged in as {{display_name}}</h1>
+      <h1>{{display_name}}'s TuneCast</h1>
       <div class="media">
         <div class="pull-left">
           <img class="media-object" width="150" src="{{images.0.url}}" />
