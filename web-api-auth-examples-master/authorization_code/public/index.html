@@ -18,17 +18,108 @@
 
   <body>
     <div class="container">
-      <div id="login">
-        <h1>This is an example of the Authorization Code flow</h1>
-        <a href="/login" class="btn btn-primary">Log in with Spotify</a>
-      </div>
-      <div id="loggedin">
-        <div id="user-profile">
+      <style type="text/css">
+        .container{
+          min-height: 100vh;
+          height: auto;
+          width: auto;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background: linear-gradient(rgba(0, 0, 0, 0.4), black), url(https://www.komando.com/wp-content/uploads/2019/08/weather-apps-thunder-storm.jpg) no-repeat;
+          padding: 0px 34px;
+          color: #fff;
+          background-position: center;
+          background-size: cover;
+          box-sizing: border-box;
+        }
+      </style>
+      <div ng-view autoscroll="true" class="ng-scope" style></div>
+      <div class= "landingng-scope">
+        <div class= "landing-jumbotron">
+          <div id="login">
+            <h1>Welcome To Your Personalized Weather Playlist <span>!
+              <style type="text/css">
+                .landing-jumbotron h1{
+                  font-family: "Helvetica Neue";
+                  font-weight: bold;
+                  letter-spacing: 5px;
+                  font-size: 36px;
+                }
+                </style>
+              <style type="text/css">
+              .landing-jumbotron span{
+                color: #1DB954;
+              }
+              </style>
+            </span></h1>
+            <a href="/login" class="btn btn-primary">
+              Log in with Spotify
+              <style type="text/css">
+                .landing-jumbotron a{
+                  width: 238px;
+                  height: 80px;
+                  border-radius: 100px;
+                  background-color: #fff;
+                  position: relative;
+                  display: block;
+                  color: #000;
+                  padding: 20px 20px 20px 20px;
+                  transition: 0.1s;
+                  font-size: 18px;
+                  letter-spacing: 1.5px;
+                  margin: 47px auto 0;
+                  text-decoration: none;
+                  word-wrap: break-word;
+                  text-align: center;
+                }
+                </style></a>
+          </div>
+          <div id="loggedin">
+            <div id="user-profile">
+            </div>
+            <div id="oauth">
+            </div>
+    
+            <button id="top-artists">Print Top Artists</button>
+            <div class="media">
+              <div class="pull-left">
+                <style type="text/css">
+                  .pull-left{
+                    float: left;
+                    width:33%;
+                    padding: 20px 30px 20px 0px;
+                  }
+                  </style>
+                <img id="profile-picture" class="media-object" width="150" />
+              </div>
+              <div class="media-body">
+                <style type="text/css">
+                  .media-body{
+                    float: left;
+                    
+                    padding: 20px 30px 20px 0px;
+                  }
+                  </style>
+                <ul id="song-list">
+                </ul>
+              </div>
+              <div class="weather">
+                <style type="text/css">
+                  .weather{
+                    float:right;
+                    
+                    padding: 20px 0px 20px 30px;
+                  }
+                  </style>
+                  CURRENT WEATHER
+              </div>
+            </div>
+            
+          </div>
+          </div>
+          </div>
         </div>
-        <div id="oauth">
-        </div>
-        <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
-        <button id="top-artists">Print Top Artists</button>
       </div>
     </div>
 
@@ -44,13 +135,12 @@
           </dl>
         </div>
       </div>
-    </script>
+    </script> 
 
     <script id="oauth-template" type="text/x-handlebars-template">
-      <h2>oAuth info</h2>
+
       <dl class="dl-horizontal">
-        <dt>Access token</dt><dd class="text-overflow">{{access_token}}</dd>
-        <dt>Refresh token</dt><dd class="text-overflow">{{refresh_token}}</dd>
+
       </dl>
     </script>
 
