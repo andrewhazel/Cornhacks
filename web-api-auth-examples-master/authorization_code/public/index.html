@@ -20,7 +20,8 @@
     <div class="container">
       <style type="text/css">
         .container{
-          height: 100vh;
+          min-height: 100vh;
+          height: auto;
           width: auto;
           display: flex;
           justify-content: center;
@@ -30,8 +31,9 @@
           color: #fff;
           background-position: center;
           background-size: cover;
+          box-sizing: border-box;
         }
-        </style>
+      </style>
       <div ng-view autoscroll="true" class="ng-scope" style>
         <div class= "landingng-scope">
           <div class= "landing-jumbotron">
@@ -200,6 +202,12 @@
                   console.log(response)
                   for(let i = 0; i < 20; i++) {
                     let element = document.createElement("li")
+                    var myImage = new Image(100, 100);
+                    myImage.src = response.items[i].album.images[0].url;
+                    myImage.style.padding = "5px 5px 5px 5px"
+                    element.appendChild(myImage);
+                    console.log(myImage);
+                    //img.appendTo(element); 
                     element.insertAdjacentHTML("beforeend", response.items[i].name)
                     list.insertAdjacentElement("beforeend", element)
                   }
