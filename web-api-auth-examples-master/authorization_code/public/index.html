@@ -38,13 +38,13 @@
       <div class= "landingng-scope">
         <div class= "landing-jumbotron">
           <div id="login">
-            <h1>Welcome To Your Personalized Weather Playlist <span>!
+            <h1>TuneCast <span>!
               <style type="text/css">
                 .landing-jumbotron h1{
                   font-family: "Helvetica Neue";
                   font-weight: bold;
                   letter-spacing: 5px;
-                  font-size: 36px;
+                  font-size: 50px;
                 }
                 </style>
               <style type="text/css">
@@ -53,6 +53,13 @@
               }
               </style>
             </span></h1>
+            <p>Welcome To Your Personalized Weather Playlist.</p>
+            <style type="text/css">
+              .landing-jumbotron p{
+                
+                font-size: 25px;
+              }
+              </style>
             <a href="/login" class="btn btn-primary">
               Log in with Spotify
               <style type="text/css">
@@ -83,8 +90,21 @@
             <div id="oauth">
             </div>
     
-            <button style="background-color:white;color:black;" id="top-artists">Print Top Artists</button>
-          
+            <button style="width: 238px;
+            height: 80px;
+            border-radius: 100px;
+            background-color: #fff;
+            position: relative;
+            display: block;
+            color: #000;
+            padding: 20px 20px 20px 20px;
+            transition: 0.1s;
+            font-size: 18px;
+            letter-spacing: 1.5px;
+            margin: 47px auto 0;
+            text-decoration: none;
+            word-wrap: break-word;
+            text-align: center;" id="top-artists">Activate TuneCast</button>
             <div class="media">
               <div class="pull-left">
                 <style type="text/css">
@@ -115,7 +135,7 @@
                     padding: 20px 0px 20px 30px;
                   }
                   </style>
-                  CURRENT WEATHER
+                  
               </div>
             </div>
             
@@ -127,7 +147,22 @@
     </div>
 
     <script id="user-profile-template" type="text/x-handlebars-template">
-      <h1>{{display_name}}'s TuneCast</h1>
+      <div class= "page2">
+      <h1>{{display_name}}'s TuneCast <span>!
+        <style type="text/css">
+          .page2 h1{
+            font-family: "Helvetica Neue";
+            font-weight: bold;
+            letter-spacing: 5px;
+            font-size: 50px;
+          }
+          </style>
+        <style type="text/css">
+        .page2 span{
+          color: #1DB954;
+        }
+        </style>
+      </span></h1>
       <div class="media">
         <div class="pull-left">
           <img class="media-object" width="150" src="{{images.0.url}}" />
@@ -137,6 +172,7 @@
             <ul id="song-list"></ul>
           </dl>
         </div>
+      </div>
       </div>
     </script> 
 
