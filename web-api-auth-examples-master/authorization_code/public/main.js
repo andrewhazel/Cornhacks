@@ -37,7 +37,14 @@ function calculateWeather(list){
       console.log(response)
       let weather = weatherCase(list, response)
       console.log(weather)
-      return weather
+      let list = document.getElementById('song-list');
+      $.ajax({
+
+      }
+      )
+      for (const song of weather.weatherPlaylist) {
+        console.log(song);
+      }
   }
 })}
 
