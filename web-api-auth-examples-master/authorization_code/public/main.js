@@ -45,7 +45,7 @@ function calculateWeather(list){
   const TEST_LOCATION = '47.6062, -122.3321';
   const LOCAL_LOCATION = '40.8136, -96.7026';
   $.ajax({
-    url: `https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/9a4d1c2917194941aa3da679d3e40262/${TEST_LOCATION}`,
+    url: `https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/9a4d1c2917194941aa3da679d3e40262/${LOCAL_LOCATION}`,
     async: false,
     success: function(response) {
       let weather = weatherCase(list, response)
@@ -165,7 +165,7 @@ function weatherCase(list, jsonDump){
     case "rain" :
       weatherPicture = weatherPictures.rain;
       weatherSongList = songSort(list, 'acoutisticness', 0.5, 1.0);
-      currentWeather = "Rain";
+      currentWeather = "Rainy Day";
       break;
     case "clear-day" :
       weatherPicture = weatherPictures.sunny;
@@ -175,7 +175,7 @@ function weatherCase(list, jsonDump){
     case "cloudy" :
       weatherPicture = weatherPictures.cloudy;
       weatherSongList = songSort(list, 'energy', 0.3, 0.6);
-      currentWeather = "Cloudy";
+      currentWeather = "Cloudy Day";
       break;
     case "clear-night":
       weatherPicture = weatherPictures.clearNight;
@@ -185,22 +185,22 @@ function weatherCase(list, jsonDump){
     case "snow":
       weatherPicture = weatherPictures.snow;
       weatherSongList = songSort(list, 'acousticness', 0.3, 0.7);
-      currentWeather = "Snow";
+      currentWeather = "Snowy Day";
       break;
     case "sleet":
       weatherPicture = weatherPictures.sleet;
       weatherSongList = songSort(list, 'acousticness', 0.3, 0.7);
-      currentWeather = "Sleet";
+      currentWeather = "Sleet Storm";
       break;
     case "wind":
       weatherPicture = weatherPictures.wind;
       weatherSongList = songSort(list, 'energy', 0.4, 0.7);
-      currentWeather = "Wind";
+      currentWeather = "Windy Day";
       break;
     case "fog":
       weatherPicture = weatherPictures.fog;
       weatherSongList = songSort(list, 'energy', 0.0, 0.3);
-      currentWeather = "Fog";
+      currentWeather = "Foggy Day";
       break;
     case "partly-cloudy-night":
       weatherPicture = weatherPictures.partlyCloudyNight;
@@ -215,7 +215,7 @@ function weatherCase(list, jsonDump){
     case "hail":
       weatherPicture = weatherPictures.hail;
       weatherSongList = songSort(list, 'acousticness', 0.0, 0.5);
-      currentWeather = "Hail";
+      currentWeather = "Hail Storm";
       break;
     case "thunderstorm":
       weatherPicture = weatherPictures.thunderstorm;
@@ -230,10 +230,10 @@ function weatherCase(list, jsonDump){
     default:
       weatherPicture = weatherPictures.sunny;
       weatherSongList = songSort(list, 'energy', 0.5, 1.0);
-      currentWeather = "Sunny";
+      currentWeather = "Sunny Day";
 
   }
-  description.textContent = `Here is your custom playlist for a weather type of: ${currentWeather}`;
+  description.textContent = `Here is your custom playlist for a ${currentWeather}`;
   return new Response(temperature, windSpeed, precipChance, weatherPicture, summary, currentWeather, weatherSongList);
 
 }
@@ -252,9 +252,7 @@ function songSort(songList, trackFeature, lowerThreshold, upperThreshold){
     }else{
       break;
     }
-  } if (!maxSizeReached){
-    //#stub
-  }
+  } 
   return curatedPlaylist;
   
 }
