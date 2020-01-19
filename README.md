@@ -1,5 +1,5 @@
 # TuneCast #
-****The utimate playlist for when the weather has you "*...feeling some type of way*".****
+****The ultimate playlist for when the weather has you "*...feeling some type of way*".****
 
 ### Description ###
 Despite the freedom that streaming platforms like Spotify provide with their ***create a playlist*** option, it can often be difficult to find music that you enjoy listening to on a daily basis. Additionally, it is apparent that weather phenoma often has a great impact on the daily behaviors and moods in our lives; a sudden thunderstorm can sour the mood of a businessman leaving lunch in a full suit. These seemingly unrelated subjects find tangential ground with **TuneCast**, a browser application that connects to Spotify in order to curate a playlist of songs that you most commonly frequent with the attributes of the weather.
