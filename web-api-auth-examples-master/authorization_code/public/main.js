@@ -37,14 +37,40 @@ function calculateWeather(list){
       console.log(response)
       let weather = weatherCase(list, response)
       console.log(weather)
-      let list = document.getElementById('song-list');
-      $.ajax({
-
-      }
-      )
+      let htmlSongList = document.getElementById('song-list');
+      const songs = []
       for (const song of weather.weatherPlaylist) {
-        console.log(song);
+        songs.push(song.id)
       }
+      $.ajax({
+        url: "https://api.spotify.com/v1/tracks",
+        data: {"ids" : songs.join()},
+        async: false,
+        headers: {
+          'Authorization': 'Bearer ' + access_token
+        },
+      success: function(response) {
+        for (let i = 0; i < response.tracks.length ; i++) {
+          song_list.push(response.tracks[i].name)
+          let element = document.createElement("li")
+          var myImage = new Image(100, 100);
+          myImage.src = response.tracks[i].album.images[0].url;
+          myImage.style.padding = "5px 5px 5px 5px"
+          element.appendChild(myImage);
+
+          //img.appendTo(element); 
+          var a = document.createElement('a');
+          var link = document.createTextNode(response.tracks[i].name);
+          a.appendChild(link);
+          a.href = response.tracks[i].external_urls.spotify;
+          a.target="_blank";
+          a.style.color= "white";
+          
+          element.appendChild(a);
+          htmlSongList.insertAdjacentElement("beforeend", element)
+        }
+      }})
+
   }
 })}
 
@@ -227,22 +253,22 @@ if (error) {
             
             for(let i = 0; i < 20; i++) {
               song_list.push(response.items[i].id)
-              let element = document.createElement("li")
-              var myImage = new Image(100, 100);
-              myImage.src = response.items[i].album.images[0].url;
-              myImage.style.padding = "5px 5px 5px 5px"
-              element.appendChild(myImage);
+              // let element = document.createElement("li")
+              // var myImage = new Image(100, 100);
+              // myImage.src = response.items[i].album.images[0].url;
+              // myImage.style.padding = "5px 5px 5px 5px"
+              // element.appendChild(myImage);
 
-              //img.appendTo(element); 
-              var a = document.createElement('a');
-              var link = document.createTextNode(response.items[i].name);
-              a.appendChild(link);
-              a.href = response.items[i].external_urls.spotify;
-              a.target="_blank";
-              a.style.color= "white";
+              // //img.appendTo(element); 
+              // var a = document.createElement('a');
+              // var link = document.createTextNode(response.items[i].name);
+              // a.appendChild(link);
+              // a.href = response.items[i].external_urls.spotify;
+              // a.target="_blank";
+              // a.style.color= "white";
               
-              element.appendChild(a);
-              list.insertAdjacentElement("beforeend", element)
+              // element.appendChild(a);
+              // list.insertAdjacentElement("beforeend", element)
             }
             $.ajax({
               url: "https://api.spotify.com/v1/audio-features",
