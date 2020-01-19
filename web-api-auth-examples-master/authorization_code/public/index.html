@@ -84,7 +84,7 @@
         </div>
         <div id="oauth">
         </div>
-        <button class="btn btn-default" id="obtain-new-token"></button>
+        
         <button id="top-artists">Print top artists</button>
       </div>
     </div>
@@ -193,20 +193,7 @@
               $('#loggedin').hide();
           }
 
-          document.getElementById('obtain-new-token').addEventListener('click', function() {
-            $.ajax({
-              url: '/refresh_token',
-              data: {
-                'refresh_token': refresh_token
-              }
-            }).done(function(data) {
-              access_token = data.access_token;
-              oauthPlaceholder.innerHTML = oauthTemplate({
-                access_token: access_token,
-                refresh_token: refresh_token
-              });
-            });
-          }, 
+         
           document.getElementById('top-artists').addEventListener('click', function() {
             $.ajax({
                 url: 'https://api.spotify.com/v1/me/top/tracks',
@@ -250,7 +237,7 @@
                 }
             })
           })
-          ,false);
+          ;
         }
       })();
     </script>
