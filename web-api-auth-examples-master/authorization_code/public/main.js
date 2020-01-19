@@ -144,6 +144,7 @@ function weatherCase(list, jsonDump){
   const summary = jsonDump.daily.summary;
   currentWeather = jsonDump.currently.icon;
   let weatherSongList;
+  const description = document.getElementById('description')
 
   //Determine type of weather for display. 
   switch (currentWeather) {
@@ -162,6 +163,7 @@ function weatherCase(list, jsonDump){
     case "clear-night":
       weatherPicture = weatherPictures.clearNight;
       weatherSongList = songSort(list, 'danceability', 0.6, 1.0);
+      description.textContent = "A clear Night Calls for a Highly Dancable Playlist - Jessie."
       break;
     case "snow":
       weatherPicture = weatherPictures.snow;
