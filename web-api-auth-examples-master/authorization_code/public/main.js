@@ -45,7 +45,7 @@ function calculateWeather(list){
   const TEST_LOCATION = '47.6062, -122.3321';
   const LOCAL_LOCATION = '40.8136, -96.7026';
   $.ajax({
-    url: `https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/9a4d1c2917194941aa3da679d3e40262/${LOCAL_LOCATION}`,
+    url: `https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/9a4d1c2917194941aa3da679d3e40262/${TEST_LOCATION}`,
     async: false,
     success: function(response) {
       let weather = weatherCase(list, response)
@@ -318,7 +318,6 @@ if (error) {
           },
           success: function(response) {
             let list = document.getElementById('song-list');
-            
             for(let i = 0; i < 50; i++) {
               song_list.push(response.items[i].id)
             }
