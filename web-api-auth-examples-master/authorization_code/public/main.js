@@ -105,7 +105,6 @@ function calculateWeather(list){
                 },
                 success: function(response) {
                   const songData = JSON.stringify({"uris" : songIds})
-                  console.log(songIds)
                   playlist_id = response.id
                   $.ajax({
                     type: "POST",
@@ -159,12 +158,11 @@ function weatherCase(list, jsonDump){
   currentWeather = jsonDump.currently.icon;
   let weatherSongList;
   const description = document.getElementById('description')
-
   //Determine type of weather for display. 
   switch (currentWeather) {
     case "rain" :
       weatherPicture = weatherPictures.rain;
-      weatherSongList = songSort(list, 'acoutisticness', 0.5, 1.0);
+      weatherSongList = songSort(list, 'acousticness', 0.5, 1.0);
       currentWeather = "Rainy Day";
       break;
     case "clear-day" :
@@ -252,7 +250,7 @@ function songSort(songList, trackFeature, lowerThreshold, upperThreshold){
     }else{
       break;
     }
-  } 
+  }
   return curatedPlaylist;
   
 }
