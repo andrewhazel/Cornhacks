@@ -12,6 +12,6 @@
     "node-fetch-npm": "^2.0.2",
     "querystring": "~0.2.0",
     "request": "~2.83.0",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.5.0"
   }
 }
